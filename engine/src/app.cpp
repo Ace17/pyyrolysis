@@ -91,6 +91,8 @@ public:
 private:
   void processInput()
   {
+    m_control.look_horz = m_control.look_vert = 0;
+
     SDL_Event event;
 
     while(SDL_PollEvent(&event))
@@ -193,10 +195,8 @@ private:
   {
     auto const speed = 0.001;
 
-    m_control.look_horz -= evt->motion.xrel * speed;
-    m_control.look_vert -= evt->motion.yrel * speed;
-
-    m_control.look_vert = clamp<float>(m_control.look_vert, -PI * 0.5, PI * 0.5);
+    m_control.look_horz = - evt->motion.xrel * speed;
+    m_control.look_vert = - evt->motion.yrel * speed;
   }
 
   void onKeyDown(SDL_Event* evt)
