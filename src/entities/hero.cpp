@@ -30,6 +30,8 @@ struct Hero : Player, Damageable
   Hero()
   {
     size = NORMAL_SIZE;
+    orientation.dir = Vector3f(1, 0, 0);
+    orientation.up = Vector3f(0, 0, 1);
   }
 
   void enter() override
@@ -52,8 +54,7 @@ struct Hero : Player, Damageable
       r.action = 1;
     }
 
-    r.orientation.dir = vectorFromAngles(lookAngleHorz, lookAngleVert);
-    r.orientation.up = Vector3f(0, 0, 1);
+    r.orientation = orientation;
 
     return r;
   }
@@ -86,8 +87,8 @@ struct Hero : Player, Damageable
 
   void airMove(Control c)
   {
-    auto const forward = vectorFromAngles(lookAngleHorz, lookAngleVert);
-    auto const left = vectorFromAngles(lookAngleHorz + PI / 2, 0);
+    auto const forward = orientation.dir;
+    auto const left = crossProduct(orientation.up, orientation.dir);
 
     Vector wantedVel = Vector(0, 0, 0);
 
@@ -123,8 +124,19 @@ struct Hero : Player, Damageable
     if(hurtDelay || life <= 0)
       control = Control {};
 
-    lookAngleHorz += control.look_horz * 0.3;
-    lookAngleVert += control.look_vert * 0.3;
+    auto const left = crossProduct(orientation.up, orientation.dir);
+    auto const fwd = crossProduct(left, orientation.up);
+    orientation.dir += (orientation.up * control.look_vert + left * control.look_horz) * 0.3;
+    orientation.up += (fwd * control.look_vert) * 0.3;
+
+    auto removeNormalComponent = [] (Vector3f v, Vector3f normal)
+      {
+        return v - normal * dotProduct(normal, v);
+      };
+
+    // keep 'dir' and 'up' orthonormal
+    orientation.dir = normalize(orientation.dir);
+    orientation.up = normalize(removeNormalComponent(orientation.up, orientation.dir));
 
     if(decrement(respawnDelay))
     {
@@ -164,7 +176,7 @@ struct Hero : Player, Damageable
 
       // look in front of us for a body to switch,
       // and switch it.
-      auto const forward = vectorFromAngles(lookAngleHorz, 0);
+      auto const forward = orientation.dir;
       Box box = getBox();
       auto body = physics->traceBox(box, forward, this).blocker;
 
@@ -211,8 +223,7 @@ struct Hero : Player, Damageable
 
   int debounceLanding = 0;
   int debounceUse = 0;
-  float lookAngleHorz = 0;
-  float lookAngleVert = 0;
+  Orientation orientation;
   bool ground = false;
   Toggle jumpbutton, firebutton;
   int hurtDelay = 0;
