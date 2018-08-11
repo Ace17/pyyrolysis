@@ -140,7 +140,7 @@ Room loadRoom(int roomIdx)
     r.brushes.push_back(brush);
   }
 
-  r.start = Vector3i(0, 0, 5);
+  r.start = Vector3i(0, 0, 2.5);
 
   return r;
 }
