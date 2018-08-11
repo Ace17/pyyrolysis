@@ -431,10 +431,9 @@ struct OpenglDisplay : Display
     auto const scale = ::scale(Vector3f(where.size.cx, where.size.cy, where.size.cz));
 
     static const float fovy = (float)((60.0f / 180) * PI);
-    static const float aspect = 1.0f;
     static const float near_ = 0.1f;
     static const float far_ = 1000.0f;
-    static const auto perspective = ::perspective(fovy, aspect, near_, far_);
+    static const auto perspective = ::perspective(fovy, m_aspect, near_, far_);
 
     auto mat = perspective * view * pos * scale;
 
@@ -493,6 +492,8 @@ struct OpenglDisplay : Display
     }
   }
 
+  float m_aspect = 1.0;
+
   void beginDraw() override
   {
     m_blinkCounter++;
@@ -500,8 +501,8 @@ struct OpenglDisplay : Display
     {
       int w, h;
       SDL_GL_GetDrawableSize(m_window, &w, &h);
-      auto size = min(w, h);
-      SAFE_GL(glViewport((w - size) / 2, (h - size) / 2, size, size));
+      m_aspect = (float)w / h;
+      SAFE_GL(glViewport(0, 0, w, h));
     }
 
     SAFE_GL(glUseProgram(m_programId));

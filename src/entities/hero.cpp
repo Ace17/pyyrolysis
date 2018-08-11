@@ -104,7 +104,7 @@ struct Hero : Player, Damageable
     if(c.right)
       wantedVel -= left * WALK_SPEED;
 
-    vel = vel * 0.995 + wantedVel * 0.005;
+    vel = vel * 0.997 + wantedVel * 0.003;
 
     if(abs(vel.x) < 0.00001)
       vel.x = 0;
