@@ -147,7 +147,7 @@ private:
         auto eyesPos = actor.pos + Vector3f(
             size.x * 0.5,
             size.y * 0.5,
-            size.z * 0.9);
+            size.z * 0.5);
         m_display->setCamera(eyesPos, actor.orientation);
         break;
       }

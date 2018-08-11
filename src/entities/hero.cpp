@@ -180,10 +180,6 @@ struct Hero : Player, Damageable
 
     if(!blinking)
       collisionGroup |= CG_SOLIDPLAYER;
-
-    if(respawnDelay == 0)
-      if(pos.z < -15.0)
-        die();
   }
 
   virtual void onDamage(int amount) override
