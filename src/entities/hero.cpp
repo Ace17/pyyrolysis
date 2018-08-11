@@ -18,13 +18,10 @@
 #include "toggle.h"
 #include "hero.h"
 
-auto const GRAVITY = 0.00005;
 auto const JUMP_SPEED = 0.012;
-auto const WALK_SPEED = 0.0075f;
-auto const MAX_HORZ_SPEED = 0.02f;
-auto const MAX_FALL_SPEED = 0.02f;
+auto const WALK_SPEED = 0.01f;
+auto const MAX_SPEED = 0.02f;
 auto const HURT_DELAY = 500;
-auto const STAIR_CLIMB = 0.5;
 
 static auto const NORMAL_SIZE = Size(0.7, 0.7, 1.7);
 
@@ -81,26 +78,14 @@ struct Hero : Player, Damageable
   {
     airMove(c);
 
-    vel.z -= GRAVITY;
-
-    if(jumpbutton.toggle(c.jump) && ground)
-    {
-      game->playSound(SND_JUMP);
-      vel.z = JUMP_SPEED;
-    }
-
-    // stop jump if the player release the button early
-    if(vel.z > 0 && !c.jump)
-      vel.z = 0;
-
-    vel.x = clamp(vel.x, -MAX_HORZ_SPEED, MAX_HORZ_SPEED);
-    vel.y = clamp(vel.y, -MAX_HORZ_SPEED, MAX_HORZ_SPEED);
-    vel.z = max(vel.z, -MAX_FALL_SPEED);
+    vel.x = clamp(vel.x, -MAX_SPEED, MAX_SPEED);
+    vel.y = clamp(vel.y, -MAX_SPEED, MAX_SPEED);
+    vel.z = clamp(vel.z, -MAX_SPEED, MAX_SPEED);
   }
 
   void airMove(Control c)
   {
-    auto const forward = vectorFromAngles(lookAngleHorz, 0);
+    auto const forward = vectorFromAngles(lookAngleHorz, lookAngleVert);
     auto const left = vectorFromAngles(lookAngleHorz + PI / 2, 0);
 
     Vector wantedVel = Vector(0, 0, 0);
@@ -119,6 +104,7 @@ struct Hero : Player, Damageable
 
     vel.x = vel.x * 0.95 + wantedVel.x * 0.05;
     vel.y = vel.y * 0.95 + wantedVel.y * 0.05;
+    vel.z = vel.z * 0.95 + wantedVel.z * 0.05;
 
     if(abs(vel.x) < 0.00001)
       vel.x = 0;
@@ -150,9 +136,7 @@ struct Hero : Player, Damageable
 
     computeVelocity(control);
 
-    physics->moveBody(this, Vector3f(0, 0, STAIR_CLIMB));
     slideMove(physics, this, vel);
-    physics->moveBody(this, Vector3f(0, 0, -STAIR_CLIMB));
 
     auto const onGround = isOnGround(physics, this);
 
