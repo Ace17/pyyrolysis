@@ -32,7 +32,7 @@ struct Actor
   }
 
   Vector3f pos;
-  Vector3f orientation = Vector3f(1, 0, 0);
+  Orientation orientation = { Vector3f(1, 0, 0), Vector3f(0, 0, 1) };
   MODEL model = 0;
   int action = 0;
   float ratio = 0; // in [0 .. 1]

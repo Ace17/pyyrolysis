@@ -52,7 +52,8 @@ struct Hero : Player, Damageable
       r.action = 1;
     }
 
-    r.orientation = vectorFromAngles(lookAngleHorz, lookAngleVert);
+    r.orientation.dir = vectorFromAngles(lookAngleHorz, lookAngleVert);
+    r.orientation.up = Vector3f(0, 0, 1);
 
     return r;
   }

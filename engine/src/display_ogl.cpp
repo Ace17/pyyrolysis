@@ -198,7 +198,7 @@ Model boxModel();
 struct Camera
 {
   Vector3f pos;
-  Vector3f dir;
+  Orientation angle;
   bool valid = false;
 };
 
@@ -363,9 +363,9 @@ struct OpenglDisplay : Display
     sendToOpengl(m_Models[id]);
   }
 
-  void setCamera(Vector3f pos, Vector3f dir) override
+  void setCamera(Vector3f pos, Orientation angle) override
   {
-    auto cam = (Camera { pos, dir });
+    auto cam = (Camera { pos, angle });
 
     if(!m_camera.valid)
     {
@@ -382,7 +382,7 @@ struct OpenglDisplay : Display
     }
 
     m_camera.pos = blend(m_camera.pos, cam.pos, 0.3);
-    m_camera.dir = cam.dir;
+    m_camera.angle = cam.angle;
   }
 
   void setFullscreen(bool fs) override
@@ -425,8 +425,8 @@ struct OpenglDisplay : Display
     auto const idx = ::clamp<int>(ratio * N, 0, N - 1);
     glBindTexture(GL_TEXTURE_2D, action.textures[idx]);
 
-    auto const target = camera.pos + camera.dir;
-    auto const view = ::lookAt(camera.pos, target, Vector3f(0, 0, 1));
+    auto const target = camera.pos + camera.angle.dir;
+    auto const view = ::lookAt(camera.pos, target, camera.angle.up);
     auto const pos = ::translate(where.pos);
     auto const scale = ::scale(Vector3f(where.size.cx, where.size.cy, where.size.cz));
 
@@ -481,7 +481,7 @@ struct OpenglDisplay : Display
     rect.pos.y = 0;
     rect.pos.z = pos.y;
 
-    auto cam = (Camera { Vector3f(0, -10, 0), Vector3f(0, 1, 0) });
+    auto cam = (Camera { Vector3f(0, -10, 0), Vector3f(0, 1, 0), Vector3f(0, 0, 1) });
 
     glDisable(GL_DEPTH_TEST);
 

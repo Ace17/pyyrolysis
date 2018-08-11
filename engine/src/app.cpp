@@ -195,8 +195,8 @@ private:
   {
     auto const speed = 0.001;
 
-    m_control.look_horz = - evt->motion.xrel * speed;
-    m_control.look_vert = - evt->motion.yrel * speed;
+    m_control.look_horz = -evt->motion.xrel * speed;
+    m_control.look_vert = -evt->motion.yrel * speed;
   }
 
   void onKeyDown(SDL_Event* evt)

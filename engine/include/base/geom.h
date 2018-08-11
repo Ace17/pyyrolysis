@@ -533,3 +533,9 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 static auto const PI = 3.14159265358979323846;
 
+struct Orientation
+{
+  Vector3f dir;
+  Vector3f up;
+};
+
