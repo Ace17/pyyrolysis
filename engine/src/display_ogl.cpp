@@ -433,7 +433,7 @@ struct OpenglDisplay : Display
     static const float fovy = (float)((60.0f / 180) * PI);
     static const float aspect = 1.0f;
     static const float near_ = 0.1f;
-    static const float far_ = 100.0f;
+    static const float far_ = 1000.0f;
     static const auto perspective = ::perspective(fovy, aspect, near_, far_);
 
     auto mat = perspective * view * pos * scale;

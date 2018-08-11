@@ -19,7 +19,7 @@
 #include "hero.h"
 
 auto const JUMP_SPEED = 0.012;
-auto const WALK_SPEED = 0.01f;
+auto const WALK_SPEED = 0.02f;
 auto const MAX_SPEED = 0.02f;
 auto const HURT_DELAY = 500;
 
@@ -102,9 +102,7 @@ struct Hero : Player, Damageable
     if(c.right)
       wantedVel -= left * WALK_SPEED;
 
-    vel.x = vel.x * 0.95 + wantedVel.x * 0.05;
-    vel.y = vel.y * 0.95 + wantedVel.y * 0.05;
-    vel.z = vel.z * 0.95 + wantedVel.z * 0.05;
+    vel = vel * 0.995 + wantedVel * 0.005;
 
     if(abs(vel.x) < 0.00001)
       vel.x = 0;

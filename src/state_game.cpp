@@ -76,6 +76,13 @@ struct GameState : Scene, IGame
 
     r.push_back(Actor(Vector(0, 0, 0), MDL_ROOMS));
 
+    if(0)
+    {
+      Actor skybox(Vector(0, 0, 0), MDL_SKYBOX);
+      skybox.scale = UnitSize * 64;
+      r.push_back(skybox);
+    }
+
     for(auto& entity : m_entities)
     {
       r.push_back(entity->getActor());
