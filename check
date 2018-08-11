@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "----------------------------------------------------------------"
+echo "Reformatting ..."
+scripts/reformat.sh src
+scripts/reformat.sh tests
+scripts/reformat.sh engine/src
+scripts/reformat.sh engine/include
+
+echo "----------------------------------------------------------------"
+echo "Building native version"
+
+BIN=bin/native \
+  make -j`nproc`
+
+./bin/native/tests.exe
+
+echo "----------------------------------------------------------------"
+echo "Building asmjs version"
+
+BIN=bin/asmjs \
+  scripts/asmjs-make -j`nproc` bin/asmjs/rel/game.html
+
+echo Success!
