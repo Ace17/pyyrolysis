@@ -23,7 +23,7 @@ auto const WALK_SPEED = 0.02f;
 auto const MAX_SPEED = 0.02f;
 auto const HURT_DELAY = 500;
 
-static auto const NORMAL_SIZE = Size(0.7, 0.7, 1.7);
+static auto const NORMAL_SIZE = UnitSize * 1.5;
 
 struct Hero : Player, Damageable
 {
