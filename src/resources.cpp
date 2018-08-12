@@ -26,6 +26,7 @@ static const Resource resources[] =
 
   { ResourceType::Model, MDL_DOOR, "res/sprites/door.json" },
   { ResourceType::Model, MDL_RECT, "res/sprites/rect.json" },
+  { ResourceType::Model, MDL_HEATER, "res/sprites/heater.json" },
   { ResourceType::Model, MDL_SKYBOX, "res/sprites/skybox.json" },
   { ResourceType::Model, MDL_AMULET, "res/sprites/amulet.json" },
   { ResourceType::Model, MDL_INVRECT, "res/sprites/invrect.json" },

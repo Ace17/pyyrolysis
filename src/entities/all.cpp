@@ -14,6 +14,7 @@
 #include "player.h"
 #include "spikes.h"
 #include "blocks.h"
+#include "heater.h"
 #include "moving_platform.h"
 #include "conveyor.h"
 #include "sign.h"
@@ -35,6 +36,7 @@ map<string, CreationFunc> getRegistry()
   r["fragile_door"] = [] (EntityArgs &) { return makeBreakableDoor(); };
   r["fragile_block"] = [] (EntityArgs &) { return make_unique<FragileBlock>(); };
   r["crumble_block"] = [] (EntityArgs &) { return make_unique<CrumbleBlock>(); };
+  r["heater"] = [] (EntityArgs &) { return make_unique<Heater>(); };
   r["door"] = [] (EntityArgs& args) { auto arg = atoi(args[0].c_str()); return makeDoor(arg); };
   r["auto_door"] = [] (EntityArgs &) { return makeAutoDoor(); };
   r["switch"] = [] (EntityArgs& args) { auto arg = atoi(args[0].c_str()); return makeSwitch(arg); };

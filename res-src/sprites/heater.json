@@ -1,0 +1,12 @@
+{
+  "type" : "sheet",
+  "sheet" : "heater.png",
+  "width" : 64,
+  "height" : 64,
+  "actions": [
+    {
+      "name": "default",
+      "frames": [ 0 ]
+    }
+  ]
+}
