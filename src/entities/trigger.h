@@ -7,3 +7,7 @@ struct TriggerEvent : Event
   int idx {};
 };
 
+struct PlayerDiedEvent : Event
+{
+};
+

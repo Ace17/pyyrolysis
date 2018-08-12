@@ -65,6 +65,11 @@ struct CentralHeater : Entity, IEventSink
         game->textBox(buffer);
       }
     }
+    else if(evt->as<PlayerDiedEvent>())
+    {
+      game->textBox("GAME OVER");
+      game->endLevel();
+    }
   }
 
   float counter = 0;

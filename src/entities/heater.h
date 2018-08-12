@@ -40,7 +40,7 @@ struct Heater : Entity, Switchable
       auto delta = player - pos;
       auto invDist = m_emitPower / dotProduct(delta, delta);
 
-      if(invDist > 2)
+      if(invDist > 2 && 0)
         game->textBox("KEEP AWAY!");
 
       game->addAmbientLight(invDist);

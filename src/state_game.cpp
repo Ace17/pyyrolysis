@@ -141,8 +141,8 @@ struct GameState : Scene, IGame
     auto level = loadRoom(levelIdx);
     m_view->playMusic(levelIdx);
 
-    if(!m_player)
-      m_player = makeHero().release();
+    delete m_player;
+    m_player = makeHero().release();
 
     m_player->pos = Vector(level.start.x, level.start.y, level.start.z) - m_player->size * 0.5;
 

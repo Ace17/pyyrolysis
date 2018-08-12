@@ -17,6 +17,7 @@
 #include "sounds.h"
 #include "toggle.h"
 #include "hero.h"
+#include "trigger.h"
 
 auto const JUMP_SPEED = 0.012;
 auto const WALK_SPEED = 0.02f;
@@ -44,6 +45,19 @@ struct Hero : Player, Damageable
     auto r = Actor(pos, MDL_INVRECT);
     r.scale = size;
     r.focus = true;
+    auto health = clamp(life / 1000.0, 0.0, 1.0);
+    auto fuzzFactor = 1.0 - health;
+    auto fuzzRange = 1.5;
+
+    auto randomFloat = [] (float min, float max)
+      {
+        float range = max - min;
+        return (rand() / float(RAND_MAX)) * range + min;
+      };
+
+    r.pos.x += randomFloat(-fuzzRange, fuzzRange) * fuzzFactor;
+    r.pos.y += randomFloat(-fuzzRange, fuzzRange) * fuzzFactor;
+    r.pos.z += randomFloat(-fuzzRange, fuzzRange) * fuzzFactor;
 
     if(1) // hide debug box
     {
@@ -66,14 +80,12 @@ struct Hero : Player, Damageable
 
   float health() override
   {
-    return clamp(life / 31.0f, 0.0f, 1.0f);
+    return clamp(life / 1000.0f, 0.0f, 1.0f);
   }
 
   virtual void addUpgrade(int upgrade) override
   {
     upgrades |= upgrade;
-    blinking = 2000;
-    life = 31;
   }
 
   void computeVelocity(Control c)
@@ -118,10 +130,12 @@ struct Hero : Player, Damageable
 
   virtual void tick() override
   {
-    decrement(blinking);
-    decrement(hurtDelay);
+    if(rand() % 100 == 0)
+    {
+      onDamage(1);
+    }
 
-    if(hurtDelay || life <= 0)
+    if(life <= 0)
       control = Control {};
 
     auto const speed = 0.2;
@@ -143,8 +157,7 @@ struct Hero : Player, Damageable
     {
       pos = respawnPoint;
       orientation = DEFAULT_ORIENTATION;
-      life = 31;
-      blinking = 2000;
+      life = 1000;
     }
 
     if(decrement(breatheDelay) || breatheDelay == 0)
@@ -193,9 +206,7 @@ struct Hero : Player, Damageable
     }
 
     collisionGroup = CG_PLAYER;
-
-    if(!blinking)
-      collisionGroup |= CG_SOLIDPLAYER;
+    collisionGroup |= CG_SOLIDPLAYER;
   }
 
   virtual void onDamage(int amount) override
@@ -203,19 +214,12 @@ struct Hero : Player, Damageable
     if(life <= 0)
       return;
 
-    if(!blinking)
+    life -= amount;
+
+    if(life < 0)
     {
-      life -= amount;
-
-      if(life < 0)
-      {
-        die();
-        return;
-      }
-
-      hurtDelay = HURT_DELAY;
-      blinking = 2000;
-      game->playSound(SND_HURT);
+      die();
+      return;
     }
   }
 
@@ -223,7 +227,9 @@ struct Hero : Player, Damageable
   {
     game->playSound(SND_DIE);
     respawnDelay = 2000;
-    game->textBox("game over");
+
+    auto evt = make_unique<PlayerDiedEvent>();
+    game->postEvent(move(evt));
   }
 
   int breatheDelay = 0;
@@ -232,8 +238,7 @@ struct Hero : Player, Damageable
   Orientation orientation;
   bool ground = false;
   Toggle jumpbutton, firebutton;
-  int hurtDelay = 0;
-  int life = 31;
+  int life = 1000;
   Control control {};
 
   int respawnDelay = 0;
