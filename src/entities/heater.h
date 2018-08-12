@@ -4,11 +4,12 @@
 #include "base/scene.h"
 #include "collision_groups.h"
 #include "entity.h"
+#include "trigger.h"
 #include "models.h"
 
-struct Heater : Entity
+struct Heater : Entity, Switchable
 {
-  Heater()
+  Heater(int id_) : id(id_)
   {
     solid = 1;
     size = UnitSize;
@@ -20,7 +21,7 @@ struct Heater : Entity
     auto r = Actor(pos, MDL_HEATER);
     r.scale = size;
 
-    if(0)
+    if(state)
       r.effect = Effect::Blinking;
 
     return r;
@@ -34,6 +35,20 @@ struct Heater : Entity
   {
   }
 
-  int disappearTimer = 0;
+  void onSwitch() override
+  {
+    if(state)
+      return;
+
+    state = true;
+    game->playSound(SND_SWITCH);
+
+    auto evt = make_unique<TriggerEvent>();
+    evt->idx = id;
+    game->postEvent(move(evt));
+  }
+
+  bool state = false;
+  const int id;
 };
 
