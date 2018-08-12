@@ -17,7 +17,6 @@ struct SplashState : Scene
 {
   SplashState(View* view_, StateMachine* fsm_) : view(view_), fsm(fsm_)
   {
-    ambientLight = 10;
   }
 
   ////////////////////////////////////////////////////////////////
@@ -50,6 +49,10 @@ struct SplashState : Scene
         activated = false;
         fsm->next();
       }
+    }
+    else
+    {
+      ambientLight = 10;
     }
   }
 

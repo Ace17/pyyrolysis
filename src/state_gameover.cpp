@@ -48,6 +48,10 @@ struct GameOverState : Scene
       {
         activated = false;
         fsm->next();
+
+        // HACK
+        if(msg[0] == 'G')
+          fsm->next();
       }
     }
     else

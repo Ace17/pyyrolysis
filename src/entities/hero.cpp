@@ -143,7 +143,7 @@ struct Hero : Player, Damageable
     else
       life = min(MAX_LIFE, life + 1);
 
-    auto const speed = 0.2;
+    auto const speed = 0.1;
     auto const left = crossProduct(orientation.up, orientation.dir);
     auto const fwd = crossProduct(left, orientation.up);
     orientation.dir += (orientation.up * control.look_vert + left * control.look_horz) * speed;
