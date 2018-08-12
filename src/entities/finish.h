@@ -41,7 +41,7 @@ struct FinishLine : Entity
   virtual void tick() override
   {
     if(decrement(touchDelay))
-      game->endLevel();
+      game->win();
   }
 
   virtual void onCollide(Entity*) override

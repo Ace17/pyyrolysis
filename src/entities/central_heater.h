@@ -45,7 +45,7 @@ struct CentralHeater : Entity, IEventSink
     }
 
     if(counter > 4.0)
-      game->endLevel();
+      game->win();
   }
 
   virtual Actor getActor() const override
@@ -78,7 +78,7 @@ struct CentralHeater : Entity, IEventSink
     }
     else if(evt->as<PlayerDiedEvent>())
     {
-      game->endLevel();
+      game->gameOver();
     }
   }
 

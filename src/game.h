@@ -55,7 +55,8 @@ struct Handle
 
 struct IGame
 {
-  virtual void endLevel() {};
+  virtual void gameOver() {};
+  virtual void win() {};
   virtual void playSound(SOUND id) = 0;
   virtual void spawn(Entity* e) = 0;
   virtual void postEvent(unique_ptr<Event> event) = 0;

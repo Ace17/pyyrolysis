@@ -27,7 +27,8 @@ using namespace std;
 
 struct GameState : Scene, IGame
 {
-  GameState(View* view) :
+  GameState(StateMachine* fsm, View* view) :
+    m_fsm(fsm),
     m_view(view)
   {
     m_shouldLoadLevel = true;
@@ -163,9 +164,17 @@ struct GameState : Scene, IGame
     spawn(m_player);
   }
 
-  void endLevel()
+  void gameOver() override
   {
     m_shouldLoadLevel = true;
+    m_fsm->next();
+  }
+
+  void win() override
+  {
+    m_shouldLoadLevel = true;
+    m_fsm->next();
+    m_fsm->next();
   }
 
   int m_level = 1;
@@ -217,6 +226,7 @@ struct GameState : Scene, IGame
   Player* m_player = nullptr;
   uvector<Entity> m_spawned;
   View* const m_view;
+  StateMachine* const m_fsm;
   unique_ptr<IPhysics> m_physics;
 
   list<IEventSink*> m_listeners;
@@ -277,8 +287,7 @@ struct GameState : Scene, IGame
 
 unique_ptr<Scene> createGameState(StateMachine* fsm, View* view, int level)
 {
-  (void)fsm;
-  auto r = make_unique<GameState>(view);
+  auto r = make_unique<GameState>(fsm, view);
   r->m_level = level;
   return r;
 }

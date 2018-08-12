@@ -57,6 +57,7 @@ SRCS_GAME:=\
 	src/entity_factory.cpp\
 	src/game.cpp\
 	src/state_game.cpp\
+	src/state_gameover.cpp\
 	src/state_splash.cpp\
 	src/convex.cpp\
 	src/level_graph.cpp\

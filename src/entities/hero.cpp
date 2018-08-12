@@ -135,7 +135,11 @@ struct Hero : Player, Damageable
   virtual void tick() override
   {
     if(life <= 0)
+    {
       control = Control {};
+      control.look_vert = +0.003;
+      control.look_horz = -0.002;
+    }
     else
       life = min(MAX_LIFE, life + 1);
 
@@ -237,8 +241,6 @@ struct Hero : Player, Damageable
   void die()
   {
     game->playSound(SND_DIE);
-    printf("GAME OVER\n");
-    game->textBox("GAME OVER");
     deathDelay = 5000;
   }
 

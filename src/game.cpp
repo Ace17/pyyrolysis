@@ -12,6 +12,7 @@
 
 unique_ptr<Scene> createSplashState(StateMachine* fsm, View* view);
 unique_ptr<Scene> createGameState(StateMachine* fsm, View* view, int level);
+unique_ptr<Scene> createGameOverState(StateMachine* fsm, View* view);
 
 Span<const Resource> getResources();
 
@@ -39,6 +40,7 @@ Scene* createGame(View* view, vector<string> args)
     fsm->states.push_back(createSplashState(fsm.get(), view));
 
   fsm->states.push_back(createGameState(fsm.get(), view, level));
+  fsm->states.push_back(createGameOverState(fsm.get(), view));
 
   return fsm.release();
 }
