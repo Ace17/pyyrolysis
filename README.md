@@ -7,7 +7,7 @@ Demo
 
 An online demo is available here:
 
-http://code.alaiwan.org/games/voiid
+http://code.alaiwan.org/games/pyyrolysis
 
 <p align="center"><img src="doc/screenshot.jpg" width="50%"></p>
 
