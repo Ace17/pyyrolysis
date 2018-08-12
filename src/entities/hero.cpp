@@ -124,10 +124,11 @@ struct Hero : Player, Damageable
     if(hurtDelay || life <= 0)
       control = Control {};
 
+    auto const speed = 0.2;
     auto const left = crossProduct(orientation.up, orientation.dir);
     auto const fwd = crossProduct(left, orientation.up);
-    orientation.dir += (orientation.up * control.look_vert + left * control.look_horz) * 0.3;
-    orientation.up += (fwd * control.look_vert) * 0.3;
+    orientation.dir += (orientation.up * control.look_vert + left * control.look_horz) * speed;
+    orientation.up += (fwd * control.look_vert) * speed;
 
     auto removeNormalComponent = [] (Vector3f v, Vector3f normal)
       {
