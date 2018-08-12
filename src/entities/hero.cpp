@@ -23,6 +23,7 @@ auto const JUMP_SPEED = 0.012;
 auto const WALK_SPEED = 0.02f;
 auto const MAX_SPEED = 0.02f;
 auto const HURT_DELAY = 500;
+auto const MAX_LIFE = 1000;
 
 static auto const NORMAL_SIZE = UnitSize * 1.5;
 static auto const DEFAULT_ORIENTATION = Orientation { Vector3f(1, 0, 0), Vector3f(0, 0, 1) };
@@ -45,7 +46,7 @@ struct Hero : Player, Damageable
     auto r = Actor(pos, MDL_INVRECT);
     r.scale = size;
     r.focus = true;
-    auto health = clamp(life / 1000.0, 0.0, 1.0);
+    auto health = clamp(life / float(MAX_LIFE), 0.0f, 1.0f);
     auto fuzzFactor = 1.0 - health;
     auto fuzzRange = 1.5;
 
@@ -80,7 +81,7 @@ struct Hero : Player, Damageable
 
   float health() override
   {
-    return clamp(life / 1000.0f, 0.0f, 1.0f);
+    return clamp(life / float(MAX_LIFE), 0.0f, 1.0f);
   }
 
   virtual void addUpgrade(int upgrade) override
@@ -132,6 +133,8 @@ struct Hero : Player, Damageable
   {
     if(life <= 0)
       control = Control {};
+    else
+      life = min(MAX_LIFE, life + 1);
 
     auto const speed = 0.2;
     auto const left = crossProduct(orientation.up, orientation.dir);
@@ -208,6 +211,7 @@ struct Hero : Player, Damageable
     if(life <= 0)
       return;
 
+    game->textBox("KEEP AWAY!");
     life -= amount;
 
     if(life <= 0)
@@ -232,7 +236,7 @@ struct Hero : Player, Damageable
   Orientation orientation;
   bool ground = false;
   Toggle jumpbutton, firebutton;
-  int life = 1000;
+  int life = MAX_LIFE;
   Control control {};
 
   int deathDelay = 0;

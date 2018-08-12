@@ -11,7 +11,7 @@ struct HeatBox : Entity
 {
   HeatBox()
   {
-    solid = 0;
+    solid = 1;
     size = UnitSize * 3;
     collisionGroup = CG_ALL;
     collidesWith = CG_PLAYER;
@@ -38,8 +38,7 @@ struct HeatBox : Entity
   {
     if(auto damageable = dynamic_cast<Damageable*>(other))
     {
-      damageable->onDamage(1);
-      game->textBox("KEEP AWAY!");
+      damageable->onDamage(2);
     }
   }
 
