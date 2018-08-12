@@ -33,9 +33,9 @@ struct HeatBox : Entity
 
   void tick() override
   {
-    size.cx += 0.001;
-    size.cy += 0.001;
-    size.cz += 0.001;
+    size.cx += 0.0005;
+    size.cy += 0.0005;
+    size.cz += 0.0005;
     pos = center - size * 0.5;
 
     m_emitPower += 0.01;
