@@ -35,6 +35,13 @@ struct Heater : Entity, Switchable
   {
     if(state)
     {
+      decrement(loopDelay);
+      if(loopDelay == 0)
+      {
+        loopDelay = 5000;
+        game->playSound(SND_ENGINE_LOOP);
+      }
+
       m_emitPower += 0.01;
       auto player = game->getPlayerPosition();
       auto delta = player - pos;
@@ -54,6 +61,7 @@ struct Heater : Entity, Switchable
 
     state = true;
     game->playSound(SND_SWITCH);
+    game->playSound(SND_ENGINE);
 
     auto evt = make_unique<TriggerEvent>();
     evt->idx = id;
@@ -63,5 +71,6 @@ struct Heater : Entity, Switchable
   float m_emitPower = 0;
   bool state = false;
   const int id;
+  int loopDelay = 0;
 };
 
