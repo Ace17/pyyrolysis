@@ -192,9 +192,6 @@ struct Hero : Player, Damageable
         switchable->onSwitch();
     }
 
-    if(control.restart)
-      onDamage(10000);
-
     collisionGroup = CG_PLAYER;
 
     if(!blinking)

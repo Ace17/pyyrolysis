@@ -32,7 +32,6 @@ struct GameState : Scene, IGame
   {
     m_shouldLoadLevel = true;
     resetPhysics();
-    ambientLight = 1.0;
   }
 
   void resetPhysics()
@@ -46,6 +45,8 @@ struct GameState : Scene, IGame
 
   void tick(Control const& c) override
   {
+    ambientLight = 1.0;
+
     if(m_shouldLoadLevel)
     {
       loadLevel(m_level);
@@ -66,6 +67,12 @@ struct GameState : Scene, IGame
     {
       m_debugFirstTime = false;
       m_player->addUpgrade(-1);
+    }
+
+    if(c.restart)
+    {
+      m_shouldLoadLevel = true;
+      textBox("Restarted");
     }
   }
 
@@ -154,7 +161,6 @@ struct GameState : Scene, IGame
   void endLevel()
   {
     m_shouldLoadLevel = true;
-    m_level++;
   }
 
   int m_level = 1;
@@ -196,6 +202,11 @@ struct GameState : Scene, IGame
   void textBox(char const* msg) override
   {
     m_view->textBox(msg);
+  }
+
+  void addAmbientLight(float amount) override
+  {
+    ambientLight += amount;
   }
 
   Player* m_player = nullptr;

@@ -62,5 +62,6 @@ struct IGame
   virtual unique_ptr<Handle> subscribeForEvents(IEventSink*) = 0;
   virtual Vector getPlayerPosition() = 0;
   virtual void textBox(char const* msg) = 0;
+  virtual void addAmbientLight(float /*amount*/) {};
 };
 

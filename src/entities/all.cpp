@@ -13,8 +13,8 @@
 #include "bonus.h"
 #include "player.h"
 #include "spikes.h"
-#include "blocks.h"
 #include "heater.h"
+#include "central_heater.h"
 #include "moving_platform.h"
 #include "conveyor.h"
 #include "sign.h"
@@ -34,8 +34,6 @@ map<string, CreationFunc> getRegistry()
   r["spider"] = [] (EntityArgs &) { return make_unique<Spider>(); };
   r["spikes"] = [] (EntityArgs &) { return make_unique<Spikes>(); };
   r["fragile_door"] = [] (EntityArgs &) { return makeBreakableDoor(); };
-  r["fragile_block"] = [] (EntityArgs &) { return make_unique<FragileBlock>(); };
-  r["crumble_block"] = [] (EntityArgs &) { return make_unique<CrumbleBlock>(); };
   r["heater"] = [] (EntityArgs& args) { return make_unique<Heater>(atoi(args[0].c_str())); };
   r["door"] = [] (EntityArgs& args) { auto arg = atoi(args[0].c_str()); return makeDoor(arg); };
   r["auto_door"] = [] (EntityArgs &) { return makeAutoDoor(); };
@@ -44,6 +42,7 @@ map<string, CreationFunc> getRegistry()
   r["finish"] = [] (EntityArgs &) { return make_unique<FinishLine>(); };
   r["conveyor"] = [] (EntityArgs &) { return make_unique<Conveyor>(); };
   r["sign"] = [] (EntityArgs& args) { auto arg = atoi(args[0].c_str()); return make_unique<Sign>(arg); };
+  r["central_heater"] = [] (EntityArgs &) { return make_unique<CentralHeater>(); };
 
   // aliases for legacy levels
   r["mp"] = r["moving_platform"];

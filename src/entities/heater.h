@@ -33,6 +33,18 @@ struct Heater : Entity, Switchable
 
   void tick() override
   {
+    if(state)
+    {
+      m_emitPower += 0.01;
+      auto player = game->getPlayerPosition();
+      auto delta = player - pos;
+      auto invDist = m_emitPower / dotProduct(delta, delta);
+
+      if(invDist > 2)
+        game->textBox("KEEP AWAY!");
+
+      game->addAmbientLight(invDist);
+    }
   }
 
   void onSwitch() override
@@ -48,6 +60,7 @@ struct Heater : Entity, Switchable
     game->postEvent(move(evt));
   }
 
+  float m_emitPower = 0;
   bool state = false;
   const int id;
 };
