@@ -182,7 +182,7 @@ private:
   void fpsChanged(int fps)
   {
     char title[128];
-    sprintf(title, "Voiid (%d FPS)", fps);
+    sprintf(title, "pyyrolysis (%d FPS)", fps);
     m_display->setCaption(title);
   }
 
