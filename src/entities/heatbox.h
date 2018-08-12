@@ -37,6 +37,13 @@ struct HeatBox : Entity
     size.cy += 0.001;
     size.cz += 0.001;
     pos = center - size * 0.5;
+
+    m_emitPower += 0.01;
+    auto player = game->getPlayerPosition();
+    auto delta = player - pos;
+    auto invDist = m_emitPower / dotProduct(delta, delta);
+
+    game->addAmbientLight(invDist);
   }
 
   void touch(Body* other)

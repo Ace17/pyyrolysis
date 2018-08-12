@@ -69,12 +69,17 @@ struct GameState : Scene, IGame
       m_player->addUpgrade(-1);
     }
 
-    if(c.restart)
+    decrement(debounceRestart);
+
+    if(c.restart && debounceRestart == 0)
     {
       m_shouldLoadLevel = true;
       textBox("Restarted");
+      debounceRestart = 1000;
     }
   }
+
+  int debounceRestart = 0;
 
   vector<Actor> getActors() const override
   {

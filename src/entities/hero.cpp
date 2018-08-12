@@ -239,7 +239,7 @@ struct Hero : Player, Damageable
     game->playSound(SND_DIE);
     printf("GAME OVER\n");
     game->textBox("GAME OVER");
-    deathDelay = 2000;
+    deathDelay = 5000;
   }
 
   int breatheDelay = 0;

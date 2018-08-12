@@ -34,15 +34,6 @@ struct Heater : Entity, Switchable
 
   void tick() override
   {
-    if(state)
-    {
-      m_emitPower += 0.01;
-      auto player = game->getPlayerPosition();
-      auto delta = player - pos;
-      auto invDist = m_emitPower / dotProduct(delta, delta);
-
-      game->addAmbientLight(invDist);
-    }
   }
 
   void onSwitch() override
@@ -63,7 +54,6 @@ struct Heater : Entity, Switchable
     game->spawn(heatBox.release());
   }
 
-  float m_emitPower = 0;
   bool state = false;
   const int id;
 };
