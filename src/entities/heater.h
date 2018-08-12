@@ -6,6 +6,7 @@
 #include "entity.h"
 #include "trigger.h"
 #include "models.h"
+#include "heatbox.h"
 
 struct Heater : Entity, Switchable
 {
@@ -59,6 +60,10 @@ struct Heater : Entity, Switchable
     auto evt = make_unique<TriggerEvent>();
     evt->idx = id;
     game->postEvent(move(evt));
+
+    auto heatBox = make_unique<HeatBox>();
+    heatBox->pos = pos;
+    game->spawn(heatBox.release());
   }
 
   float m_emitPower = 0;

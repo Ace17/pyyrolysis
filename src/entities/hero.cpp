@@ -130,11 +130,6 @@ struct Hero : Player, Damageable
 
   virtual void tick() override
   {
-    if(rand() % 100 == 0)
-    {
-      onDamage(1);
-    }
-
     if(life <= 0)
       control = Control {};
 
@@ -153,11 +148,10 @@ struct Hero : Player, Damageable
     orientation.dir = normalize(orientation.dir);
     orientation.up = normalize(removeNormalComponent(orientation.up, orientation.dir));
 
-    if(decrement(respawnDelay))
+    if(decrement(deathDelay))
     {
-      pos = respawnPoint;
-      orientation = DEFAULT_ORIENTATION;
-      life = 1000;
+      auto evt = make_unique<PlayerDiedEvent>();
+      game->postEvent(move(evt));
     }
 
     if(decrement(breatheDelay) || breatheDelay == 0)
@@ -216,7 +210,7 @@ struct Hero : Player, Damageable
 
     life -= amount;
 
-    if(life < 0)
+    if(life <= 0)
     {
       die();
       return;
@@ -225,11 +219,11 @@ struct Hero : Player, Damageable
 
   void die()
   {
+    printf("Die\n");
     game->playSound(SND_DIE);
-    respawnDelay = 2000;
-
-    auto evt = make_unique<PlayerDiedEvent>();
-    game->postEvent(move(evt));
+    printf("GAME OVER\n");
+    game->textBox("GAME OVER");
+    deathDelay = 2000;
   }
 
   int breatheDelay = 0;
@@ -241,7 +235,7 @@ struct Hero : Player, Damageable
   int life = 1000;
   Control control {};
 
-  int respawnDelay = 0;
+  int deathDelay = 0;
   Vector respawnPoint;
   Vector vel;
 
