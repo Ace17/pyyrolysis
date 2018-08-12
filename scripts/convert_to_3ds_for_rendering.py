@@ -69,7 +69,7 @@ def run():
   bpy.ops.mesh.select_all(action='SELECT')
 
   # Create new image
-  bpy.ops.image.new(name="myLightMap", width=2048, height=2048)
+  bpy.ops.image.new(name="myLightMap", width=4096, height=4096)
 
   # Compute lightmap UV coords
   bpy.ops.uv.lightmap_pack()
