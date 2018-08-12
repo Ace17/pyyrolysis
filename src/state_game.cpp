@@ -28,8 +28,8 @@ using namespace std;
 struct GameState : Scene, IGame
 {
   GameState(StateMachine* fsm, View* view) :
-    m_fsm(fsm),
-    m_view(view)
+    m_view(view),
+    m_fsm(fsm)
   {
     m_shouldLoadLevel = true;
     resetPhysics();

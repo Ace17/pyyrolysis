@@ -38,14 +38,15 @@ struct CentralHeater : Entity, IEventSink
       }
     }
 
-    if(remaining == 0)
+    if(m_activated)
     {
-      counter += 0.001;
-      game->addAmbientLight(exp(counter));
-    }
+      game->textBox("pyyrolysis sequence initiated");
+      winDelay += 0.001;
+      game->addAmbientLight(exp(winDelay));
 
-    if(counter > 4.0)
-      game->win();
+      if(winDelay > 4.0)
+        game->win();
+    }
   }
 
   virtual Actor getActor() const override
@@ -53,7 +54,7 @@ struct CentralHeater : Entity, IEventSink
     auto r = Actor(pos, MDL_HEATER);
     r.scale = size;
 
-    if(remaining == 0)
+    if(m_activated)
       r.effect = Effect::Blinking;
 
     return r;
@@ -67,7 +68,7 @@ struct CentralHeater : Entity, IEventSink
 
       if(remaining == 0)
       {
-        game->textBox("pyyrolysis sequence initiated");
+        m_activated = true;
       }
       else
       {
@@ -82,8 +83,9 @@ struct CentralHeater : Entity, IEventSink
     }
   }
 
-  float counter = 0;
+  float winDelay = 0;
   int remaining = 17;
+  bool m_activated = false;
   unique_ptr<Handle> subscription;
   int loopDelay = 0;
 };

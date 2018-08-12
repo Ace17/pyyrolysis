@@ -15,7 +15,7 @@
 
 struct GameOverState : Scene
 {
-  GameOverState(View* view_, StateMachine* fsm_) : view(view_), fsm(fsm_)
+  GameOverState(View* view_, StateMachine* fsm_, char const* msg_) : view(view_), fsm(fsm_), msg(msg_)
   {
   }
 
@@ -30,7 +30,7 @@ struct GameOverState : Scene
 
     if(!activated)
     {
-      view->textBox("GAME OVER");
+      view->textBox(msg);
 
       if(c.fire || c.jump || c.dash)
       {
@@ -64,12 +64,13 @@ struct GameOverState : Scene
 private:
   View* const view;
   StateMachine* const fsm;
+  const char* const msg;
   bool activated = false;
   int delay = 0;
 };
 
-unique_ptr<Scene> createGameOverState(StateMachine* fsm, View* view)
+unique_ptr<Scene> createGameOverState(StateMachine* fsm, View* view, char const* msg)
 {
-  return make_unique<GameOverState>(view, fsm);
+  return make_unique<GameOverState>(view, fsm, msg);
 }
 
