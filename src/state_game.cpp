@@ -32,6 +32,7 @@ struct GameState : Scene, IGame
   {
     m_shouldLoadLevel = true;
     resetPhysics();
+    ambientLight = 1.0;
   }
 
   void resetPhysics()
@@ -66,8 +67,6 @@ struct GameState : Scene, IGame
       m_debugFirstTime = false;
       m_player->addUpgrade(-1);
     }
-
-    ambientLight = 1.0 + min(0.0f, 0.02f * m_player->pos.z);
   }
 
   vector<Actor> getActors() const override

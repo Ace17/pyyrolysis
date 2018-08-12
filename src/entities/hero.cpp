@@ -147,6 +147,12 @@ struct Hero : Player, Damageable
       blinking = 2000;
     }
 
+    if(decrement(breatheDelay) || breatheDelay == 0)
+    {
+      game->playSound(SND_BREATHE);
+      breatheDelay = 6000;
+    }
+
     computeVelocity(control);
 
     slideMove(physics, this, vel);
@@ -223,6 +229,7 @@ struct Hero : Player, Damageable
     game->textBox("game over");
   }
 
+  int breatheDelay = 0;
   int debounceLanding = 0;
   int debounceUse = 0;
   Orientation orientation;

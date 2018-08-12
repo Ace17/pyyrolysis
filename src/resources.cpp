@@ -23,6 +23,7 @@ static const Resource resources[] =
   { ResourceType::Sound, SND_EXPLODE, "res/sounds/explode.ogg" },
   { ResourceType::Sound, SND_DISAPPEAR, "res/sounds/disappear.ogg" },
   { ResourceType::Sound, SND_TELEPORT, "res/sounds/teleport.ogg" },
+  { ResourceType::Sound, SND_BREATHE, "res/sounds/breathe.ogg" },
 
   { ResourceType::Model, MDL_DOOR, "res/sprites/door.json" },
   { ResourceType::Model, MDL_RECT, "res/sprites/rect.json" },
