@@ -27,6 +27,17 @@ struct CentralHeater : Entity, IEventSink
 
   virtual void tick() override
   {
+    if(remaining < 17)
+    {
+      decrement(loopDelay);
+
+      if(loopDelay == 0)
+      {
+        loopDelay = 2000;
+        game->playSound(SND_ENGINE_LOOP);
+      }
+    }
+
     if(remaining == 0)
     {
       counter += 0.001;
@@ -75,5 +86,6 @@ struct CentralHeater : Entity, IEventSink
   float counter = 0;
   int remaining = 17;
   unique_ptr<Handle> subscription;
+  int loopDelay = 0;
 };
 
