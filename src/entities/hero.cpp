@@ -24,14 +24,14 @@ auto const MAX_SPEED = 0.02f;
 auto const HURT_DELAY = 500;
 
 static auto const NORMAL_SIZE = UnitSize * 1.5;
+static auto const DEFAULT_ORIENTATION = Orientation { Vector3f(1, 0, 0), Vector3f(0, 0, 1) };
 
 struct Hero : Player, Damageable
 {
   Hero()
   {
     size = NORMAL_SIZE;
-    orientation.dir = Vector3f(1, 0, 0);
-    orientation.up = Vector3f(0, 0, 1);
+    orientation = DEFAULT_ORIENTATION;
   }
 
   void enter() override
@@ -142,6 +142,7 @@ struct Hero : Player, Damageable
     if(decrement(respawnDelay))
     {
       pos = respawnPoint;
+      orientation = DEFAULT_ORIENTATION;
       life = 31;
       blinking = 2000;
     }

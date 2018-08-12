@@ -19,6 +19,7 @@ struct Heater : Entity
   {
     auto r = Actor(pos, MDL_HEATER);
     r.scale = size;
+
     if(0)
       r.effect = Effect::Blinking;
 
