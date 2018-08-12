@@ -19,11 +19,10 @@
 #include "hero.h"
 #include "trigger.h"
 
-auto const JUMP_SPEED = 0.012;
 auto const WALK_SPEED = 0.02f;
 auto const MAX_SPEED = 0.02f;
 auto const HURT_DELAY = 500;
-auto const MAX_LIFE = 1000;
+auto const MAX_LIFE = 2000;
 
 static auto const NORMAL_SIZE = UnitSize * 1.5;
 static auto const DEFAULT_ORIENTATION = Orientation { Vector3f(1, 0, 0), Vector3f(0, 0, 1) };
@@ -47,18 +46,22 @@ struct Hero : Player, Damageable
     r.scale = size;
     r.focus = true;
     auto health = clamp(life / float(MAX_LIFE), 0.0f, 1.0f);
-    auto fuzzFactor = 1.0 - health;
-    auto fuzzRange = 1.5;
 
-    auto randomFloat = [] (float min, float max)
-      {
-        float range = max - min;
-        return (rand() / float(RAND_MAX)) * range + min;
-      };
+    if(health > 0)
+    {
+      auto fuzzFactor = 1.0 - health;
+      auto fuzzRange = 1.5;
 
-    r.pos.x += randomFloat(-fuzzRange, fuzzRange) * fuzzFactor;
-    r.pos.y += randomFloat(-fuzzRange, fuzzRange) * fuzzFactor;
-    r.pos.z += randomFloat(-fuzzRange, fuzzRange) * fuzzFactor;
+      auto randomFloat = [] (float min, float max)
+        {
+          float range = max - min;
+          return (rand() / float(RAND_MAX)) * range + min;
+        };
+
+      r.pos.x += randomFloat(-fuzzRange, fuzzRange) * fuzzFactor;
+      r.pos.y += randomFloat(-fuzzRange, fuzzRange) * fuzzFactor;
+      r.pos.z += randomFloat(-fuzzRange, fuzzRange) * fuzzFactor;
+    }
 
     if(1) // hide debug box
     {
@@ -186,7 +189,11 @@ struct Hero : Player, Damageable
     }
 
     decrement(debounceLanding);
+    decrement(debounceDamage);
     decrement(debounceUse);
+
+    if(debounceDamage)
+      game->addAmbientLight(100);
 
     if(control.use && debounceUse == 0)
     {
@@ -214,6 +221,12 @@ struct Hero : Player, Damageable
     game->textBox("KEEP AWAY!");
     life -= amount;
 
+    if(debounceDamage == 0)
+    {
+      debounceDamage = 100;
+      game->playSound(SND_DAMAGE);
+    }
+
     if(life <= 0)
     {
       die();
@@ -223,7 +236,6 @@ struct Hero : Player, Damageable
 
   void die()
   {
-    printf("Die\n");
     game->playSound(SND_DIE);
     printf("GAME OVER\n");
     game->textBox("GAME OVER");
@@ -233,6 +245,7 @@ struct Hero : Player, Damageable
   int breatheDelay = 0;
   int debounceLanding = 0;
   int debounceUse = 0;
+  int debounceDamage = 0;
   Orientation orientation;
   bool ground = false;
   Toggle jumpbutton, firebutton;

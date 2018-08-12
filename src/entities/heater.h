@@ -59,7 +59,7 @@ struct Heater : Entity, Switchable
     game->postEvent(move(evt));
 
     auto heatBox = make_unique<HeatBox>();
-    heatBox->pos = pos;
+    heatBox->pos = getCenter();
     game->spawn(heatBox.release());
   }
 
